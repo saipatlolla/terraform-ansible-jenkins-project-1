@@ -3,20 +3,24 @@ pipeline {
 
     stages {
 
-        stage('Verify Ansible') {
+        stage('Checkout Code') {
             steps {
-                sh '''
-                cd ansible
-                ansible --version
-                '''
+                git branch: 'master',
+                    url: 'https://github.com/saipatlolla/terraform-ansible-jenkins-project-1.git'
             }
         }
 
-        stage('Deploy Nginx') {
+        stage('Verify Ansible') {
+            steps {
+                sh 'ansible --version'
+            }
+        }
+
+        stage('Deploy Nginx via Ansible') {
             steps {
                 sh '''
                 cd ansible
-                ansible-playbook -i inventory playbook.yml
+                ansible-playbook -i inventory install_nginx.yml
                 '''
             }
         }
