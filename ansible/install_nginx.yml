@@ -1,0 +1,28 @@
+---
+- name: Install and Configure Nginx
+  hosts: all
+  become: yes
+
+  tasks:
+
+    - name: Update yum packages
+      yum:
+        name: "*"
+        state: latest
+
+    - name: Install Nginx
+      yum:
+        name: nginx
+        state: present
+
+    - name: Start Nginx service
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Copy custom index page
+      copy:
+        src: ../app/index.html
+        dest: /usr/share/nginx/html/index.html
+        mode: '0644'
