@@ -41,7 +41,7 @@ pipeline {
                     echo "[web]" > inventory
                     echo "${EC2_IP} ansible_user=ec2-user ansible_ssh_private_key_file=/var/lib/jenkins/.ssh/kubernetes_practice" >> inventory
                     cat inventory
-                }    """
+                }   """
             }
         }
 
