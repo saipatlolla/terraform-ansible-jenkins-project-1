@@ -26,7 +26,7 @@ pipeline {
             agent { label 'terraform-agent' }
             steps {
                  script {
-                     env.EC2_IP = sh(
+                     EC2_IP = sh(
                          script: "cd terraform && terraform output -raw public_ip",
                          returnStdout: true
                      ).trim()
@@ -41,6 +41,7 @@ pipeline {
             steps {
                     sh """
                     cd ansible
+                    rm -f inventory
                     echo "[web]" > inventory
                     echo "${EC2_IP} ansible_user=ec2-user ansible_ssh_private_key_file=/var/lib/jenkins/.ssh/kubernetes_practice" >> inventory
                     cat inventory
