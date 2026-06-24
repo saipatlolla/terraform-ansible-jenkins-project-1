@@ -4,6 +4,7 @@ pipeline {
     stages {
 
         stage('Checkout Code') {
+            agent { label 'terraform-agent' }
             steps {
                 git branch: 'master',
                     url: 'https://github.com/saipatlolla/terraform-ansible-jenkins-project-1.git'
@@ -11,6 +12,7 @@ pipeline {
         }
 
         stage('Terraform apply') {
+            agent { label 'terraform-agent' }
             steps {
                 sh """
                 cd terraform
@@ -21,6 +23,7 @@ pipeline {
         }
 
         stage('Get EC2 IP') {
+            agent { label 'terraform-agent' }
             steps {
                  script {
                      env.EC2_IP = sh(
@@ -34,6 +37,7 @@ pipeline {
         }
 
         stage('Create Inventory') {
+            agent { label 'ansible-agent' }
             steps {
                 script {
                     sh """
@@ -47,12 +51,14 @@ pipeline {
         }
 
         stage('Verify Ansible') {
+            agent { label 'ansible-agent' }
             steps {
                 sh 'ansible --version'
             }
         }
 
         stage('Deploy Nginx via Ansible') {
+            agent { label 'ansible-agent' }
             steps {
                 sh """
                 cd ansible
