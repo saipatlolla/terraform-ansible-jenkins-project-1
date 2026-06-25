@@ -26,12 +26,12 @@ pipeline {
             agent { label 'terraform-agent' }
             steps {
                  script {
-                     EC2_IP = sh(
+                     env.EC2_IP = sh(
                          script: "cd terraform && terraform output -raw public_ip",
                          returnStdout: true
                      ).trim()
 
-                     echo "EC2 IP is: ${EC2_IP}"
+                     echo "EC2 IP is: ${env.EC2_IP}"
                  } 
             }
         }
